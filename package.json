@@ -1,0 +1,26 @@
+{
+  "name": "react-native-container",
+  "version": "1.0.1",
+  "description": "Simply an enhanced View component for lazy developers",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-package": "npm pack && cd examples && yarn add ../react-native-container-*.tgz"
+  },
+  "keywords": [
+    "React Native",
+    "React",
+    "Container",
+    "View",
+    "Flex",
+    "Typescript",
+    "react-native",
+    "react"
+  ],
+  "author": "Hung Arthur Dao",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "16.9.11",
+    "@types/react-native": "0.60.22"
+  }
+}
