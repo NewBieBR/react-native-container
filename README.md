@@ -11,8 +11,7 @@ Simply an enhanced View component for lazy developers.
     <Container/>
 </Container>
 ```
-
-![](https://i.imgur.com/hP2Cwd0.png)
+<img src="https://i.imgur.com/hP2Cwd0.png" width="240">
 
 ```
 <Container row>
@@ -20,7 +19,7 @@ Simply an enhanced View component for lazy developers.
     <Container/>
 </Container>
 ```
-![](https://i.imgur.com/XDHDYbo.png)
+<img src="https://i.imgur.com/XDHDYbo.png" width="240">
 
 ### Size
 
@@ -30,7 +29,7 @@ Simply an enhanced View component for lazy developers.
     <Container size={3}/>
 </Container>
 ```
-![](https://i.imgur.com/rgqtFsv.png)
+<img src="https://i.imgur.com/rgqtFsv.png" width="240">
 
 ```
 <Container>
@@ -38,7 +37,7 @@ Simply an enhanced View component for lazy developers.
     <Container/>
 </Container>
 ```
-![](https://i.imgur.com/1gkKWHs.png)
+<img src="https://i.imgur.com/1gkKWHs.png" width="240">
 
 ### Nested
 
@@ -52,7 +51,7 @@ Simply an enhanced View component for lazy developers.
     <Container/>
 </Container>
 ```
-![](https://i.imgur.com/gLnJTmz.png)
+<img src="https://i.imgur.com/gLnJTmz.png" width="240">
 
 ## Align Children
 
@@ -63,21 +62,21 @@ Simply an enhanced View component for lazy developers.
     <Container/>
 </Container>
 ```
-![](https://i.imgur.com/Oc8ytbv.png)
+<img src="https://i.imgur.com/Oc8ytbv.png" width="240">
 
 ```
 <Container center="horizontal">
     <Container/>
 </Container>
 ```
-![](https://i.imgur.com/J1Z634j.png)
+<img src="https://i.imgur.com/J1Z634j.png" width="240">
 
 ```
 <Container center="vertical">
     <Container/>
 </Container>
 ```
-![](https://i.imgur.com/3TwabYU.png)
+<img src="https://i.imgur.com/3TwabYU.png" width="240">
 
 
 
