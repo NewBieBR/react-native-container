@@ -8,42 +8,42 @@ import {
 } from "react-native";
 
 interface Props {
-  center: boolean | string; // can be "horizontal", "vertical", "both", true or false. !!! true = "both"
-  noflex: boolean; // Container is flex 1 by default, set this to true will disable that
-  alignLeft: boolean;
-  alignRight: boolean;
-  alignTop: boolean;
-  alignBottom: boolean;
-  row: boolean;
-  col: boolean;
-  absolute: boolean;
-  absoluteFill: boolean;
-  fitParent: any; // can be "width", "height", true or false
-  fitContent: boolean; // TODO
-  flex: boolean;
-  size: number;
-  style: any;
-  onPress: () => {}; // TODO
-  onLayout: () => {};
-  safeView: boolean;
-  isScrollable: boolean;
-  scrollViewProps: any;
-  avoidKeyboard: boolean;
-  pointerEvents: string;
-  margin: number | string; // can be number or percentage (= string)
-  marginHorizontal: number | string; // can be number or percentage (= string)
-  marginVertical: number | string; // can be number or percentage (= string)
-  marginLeft: number | string; // can be number or percentage (= string)
-  marginRight: number | string; // can be number or percentage (= string)
-  marginTop: number | string; // can be number or percentage (= string)
-  marginBottom: number | string; // can be number or percentage (= string)
-  padding: number | string; // can be number or percentage (= string)
-  paddingHorizontal: number | string; // can be number or percentage (= string)
-  paddingVertical: number | string; // can be number or percentage (= string)
-  paddingLeft: number | string; // can be number or percentage (= string)
-  paddingRight: number | string; // can be number or percentage (= string)
-  paddingTop: number | string; // can be number or percentage (= string)
-  paddingBottom: number | string; // can be number or percentage (= string)
+  center?: boolean | string; // can be "horizontal", "vertical", "both", true or false. !!! true = "both"
+  noflex?: boolean; // Container is flex 1 by default, set this to true will disable that
+  alignLeft?: boolean;
+  alignRight?: boolean;
+  alignTop?: boolean;
+  alignBottom?: boolean;
+  row?: boolean;
+  col?: boolean;
+  absolute?: boolean;
+  absoluteFill?: boolean;
+  fitParent?: any; // can be "width", "height", true or false
+  fitContent?: boolean; // TODO
+  flex?: boolean;
+  size?: number;
+  style?: any;
+  onPress?: () => {}; // TODO
+  onLayout?: () => {};
+  safeView?: boolean;
+  isScrollable?: boolean;
+  scrollViewProps?: any;
+  avoidKeyboard?: boolean;
+  pointerEvents?: string;
+  margin?: number | string; // can be number or percentage (= string)
+  marginHorizontal?: number | string; // can be number or percentage (= string)
+  marginVertical?: number | string; // can be number or percentage (= string)
+  marginLeft?: number | string; // can be number or percentage (= string)
+  marginRight?: number | string; // can be number or percentage (= string)
+  marginTop?: number | string; // can be number or percentage (= string)
+  marginBottom?: number | string; // can be number or percentage (= string)
+  padding?: number | string; // can be number or percentage (= string)
+  paddingHorizontal?: number | string; // can be number or percentage (= string)
+  paddingVertical?: number | string; // can be number or percentage (= string)
+  paddingLeft?: number | string; // can be number or percentage (= string)
+  paddingRight?: number | string; // can be number or percentage (= string)
+  paddingTop?: number | string; // can be number or percentage (= string)
+  paddingBottom?: number | string; // can be number or percentage (= string)
 }
 
 interface State {}
