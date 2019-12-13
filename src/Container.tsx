@@ -171,7 +171,6 @@ export default class Container extends React.PureComponent<Props, State> {
     var ContainerComponent: any = View;
     if (safeView) ContainerComponent = SafeAreaView;
     else if (avoidKeyboard) ContainerComponent = KeyboardAvoidingView;
-    console.log(style.flex)
     return (
       <ContainerComponent
         pointerEvents={this.props.pointerEvents}
