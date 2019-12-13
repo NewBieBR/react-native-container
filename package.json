@@ -1,6 +1,6 @@
 {
   "name": "react-native-container",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simply an enhanced View component for lazy developers",
   "main": "src/index.ts",
   "scripts": {
