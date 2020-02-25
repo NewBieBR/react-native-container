@@ -1,11 +1,11 @@
 {
   "name": "react-native-container",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Simply an enhanced View component for lazy developers",
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test-package": "npm pack && cd examples && yarn add ../react-native-container-*.tgz"
+    "test-package": "rm -f *.tgz && npm pack && cd examples && yarn cache clean && yarn remove react-native-container && yarn add ../react-native-container-*.tgz"
   },
   "repository": {
     "type": "git",

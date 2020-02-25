@@ -1,194 +1,178 @@
-import * as React from "react";
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  ScrollView
-} from "react-native";
+import * as React from 'react';
+import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import { AlignMode, CenterMode, FitMode, RowColAlignment } from '.';
 
-interface Props {
-  center?: boolean | string; // can be "horizontal", "vertical", "both", true or false. !!! true = "both"
-  noflex?: boolean; // Container is flex 1 by default, set this to true will disable that
-  alignLeft?: boolean;
-  alignRight?: boolean;
-  alignTop?: boolean;
-  alignBottom?: boolean;
-  row?: boolean;
-  col?: boolean;
+export interface ContainerProps extends ViewProps {
+  size: number; // Flex
+  noflex?: boolean; // Disable flex display
+  center?: boolean | CenterMode; // Center children
+  align?: AlignMode | AlignMode[]; // Align children
+  row?: boolean; // Direction
+  col?: boolean; // Direction
   absolute?: boolean;
   absoluteFill?: boolean;
-  fitParent?: any; // can be "width", "height", true or false
-  fitContent?: boolean; // TODO
-  flex?: boolean;
-  size?: number;
-  style?: any;
-  onPress?: () => {}; // TODO
-  onLayout?: () => {};
-  safeView?: boolean;
-  isScrollable?: boolean;
-  scrollViewProps?: any;
-  avoidKeyboard?: boolean;
-  pointerEvents?: string;
-  margin?: number | string; // can be number or percentage (= string)
-  marginHorizontal?: number | string; // can be number or percentage (= string)
-  marginVertical?: number | string; // can be number or percentage (= string)
-  marginLeft?: number | string; // can be number or percentage (= string)
-  marginRight?: number | string; // can be number or percentage (= string)
-  marginTop?: number | string; // can be number or percentage (= string)
-  marginBottom?: number | string; // can be number or percentage (= string)
-  padding?: number | string; // can be number or percentage (= string)
-  paddingHorizontal?: number | string; // can be number or percentage (= string)
-  paddingVertical?: number | string; // can be number or percentage (= string)
-  paddingLeft?: number | string; // can be number or percentage (= string)
-  paddingRight?: number | string; // can be number or percentage (= string)
-  paddingTop?: number | string; // can be number or percentage (= string)
-  paddingBottom?: number | string; // can be number or percentage (= string)
+  fitParent?: boolean | FitMode;
+
+  margin?: number | string; // Can be number or percentage
+  marginHorizontal?: number | string;
+  marginVertical?: number | string;
+  marginLeft?: number | string;
+  marginRight?: number | string;
+  marginTop?: number | string;
+  marginBottom?: number | string;
+  padding?: number | string;
+  paddingHorizontal?: number | string;
+  paddingVertical?: number | string;
+  paddingLeft?: number | string;
+  paddingRight?: number | string;
+  paddingTop?: number | string;
+  paddingBottom?: number | string;
 }
 
-interface State {}
+export default class Container extends React.PureComponent<ContainerProps> {
+  ContainerComponent = View;
 
-export default class Container extends React.PureComponent<Props, State> {
   static defaultProps = {
-    center: false,
-    noflex: false,
-    alignLeft: false,
-    alignRight: false,
-    alignTop: false,
-    alignBottom: false,
-    row: false,
-    col: false,
-    absolute: false,
-    absoluteFill: false,
-    fitParent: false,
-    fitContent: false,
-    flex: true,
-    size: 0,
-    style: {},
-    onPress: () => {},
-    onLayout: () => {},
-    safeView: false,
-    isScrollable: false,
-    avoidKeyboard: false
-  };
-
-  rowSetAlignment(style: any) {
-    var { center, alignBottom, alignLeft, alignTop, alignRight } = this.props;
-
-    if (center === "horizontal" || center === "both" || center === true)
-      style.justifyContent = "center";
-    if (center === "vertical" || center === "both" || center === true)
-      style.alignItems = "center";
-    if (alignTop) style.alignItems = "flex-start";
-    else if (alignBottom) style.alignItems = "flex-end";
-    if (alignLeft) style.justifyContent = "flex-start";
-    else if (alignRight) style.justifyContent = "flex-end";
+    size: 1
   }
 
-  colSetAlignment(style: any) {
-    var { center, alignBottom, alignLeft, alignTop, alignRight } = this.props;
-
-    if (center === "horizontal" || center === "both" || center === true)
-      style.alignItems = "center";
-    if (center === "vertical" || center === "both" || center === true)
-      style.justifyContent = "center";
-    if (alignRight) style.alignItems = "flex-end";
-    else if (alignLeft) style.alignItems = "flex-start";
-    if (alignBottom) style.justifyContent = "flex-end";
-    else if (alignTop) style.justifyContent = "flex-start";
+  mergeStyles(computedStyle: ViewStyle[]): StyleProp<ViewStyle> {
+    let finalStyle: StyleProp<ViewStyle>;
+    if (this.props.style instanceof Array)
+      finalStyle = this.props.style.concat(computedStyle);
+    else {
+      finalStyle = computedStyle;
+      finalStyle.unshift(this.props.style);
+    }
+    return finalStyle;
   }
 
-  setSize(style: any) {
-    var { size, fitParent, noflex } = this.props;
+  style: ViewStyle[] = [];
 
-    if (size) style.flex = size;
-    if (fitParent === "width" || fitParent === true) style.width = "100%";
-    if (fitParent === "height" || fitParent === true) style.height = "100%";
-    if (
-      noflex ||
-      (this.props.style && (this.props.style.width || this.props.style.height))
-    )
-      style.flex = 0;
+  computeAlignment(mode: 'row' | 'col', style: ViewStyle[]) {
+    const { center, align } = this.props;
+    if (center === true || center === 'both' || center === 'horizontal') {
+      style.push(RowColAlignment[mode].horizontal);
+    }
+    if (center === true || center === 'both' || center === 'vertical') {
+      style.push(RowColAlignment[mode].vertical);
+    }
+    if (align instanceof Array) {
+      for (const alignMode of align) {
+        style.push(RowColAlignment[mode][alignMode]);
+      }
+    } else if (align) {
+      style.push(RowColAlignment[mode][align]);
+    }
   }
 
-  mergeObjects(objects: any) {
-    if (!Array.isArray(objects)) return objects;
-    var newObjects = [{}].concat(objects);
-    return newObjects.reduce((r, c) => Object.assign(r, c), {});
+  computeFitParent(fitParent: boolean | FitMode, style: ViewStyle[]) {
+    if (fitParent !== false) {
+      style.push(styles.noflex);
+    }
+    if (fitParent === 'width' || fitParent === true)
+      style.push(styles.fullWidth);
+    if (fitParent === 'height' || fitParent === true)
+      style.push(styles.fullHeight);
   }
 
-  mergeStyles() {
-    return this.mergeObjects(
-      [styles.container].concat(
-        {
-          padding: this.props.padding,
-          paddingHorizontal: this.props.paddingHorizontal,
-          paddingVertical: this.props.paddingVertical,
-          paddingLeft: this.props.paddingLeft,
-          paddingRight: this.props.paddingRight,
-          paddingTop: this.props.paddingTop,
-          paddingBottom: this.props.paddingBottom,
-          margin: this.props.margin,
-          marginHorizontal: this.props.marginHorizontal,
-          marginVertical: this.props.marginVertical,
-          marginLeft: this.props.marginLeft,
-          marginRight: this.props.marginRight,
-          marginTop: this.props.marginTop,
-          marginBottom: this.props.marginBottom
-        },
-        this.props.style
-      )
-    );
+  computeSpacing(style: ViewStyle[]) {
+    const spacingStyle = {
+      padding: this.props.padding,
+      paddingHorizontal: this.props.paddingHorizontal,
+      paddingVertical: this.props.paddingVertical,
+      paddingLeft: this.props.paddingLeft,
+      paddingRight: this.props.paddingRight,
+      paddingTop: this.props.paddingTop,
+      paddingBottom: this.props.paddingBottom,
+      margin: this.props.margin,
+      marginHorizontal: this.props.marginHorizontal,
+      marginVertical: this.props.marginVertical,
+      marginLeft: this.props.marginLeft,
+      marginRight: this.props.marginRight,
+      marginTop: this.props.marginTop,
+      marginBottom: this.props.marginBottom,
+    }
+    for (const key of Object.keys(spacingStyle)) {
+      if (spacingStyle[key] === undefined) {
+        delete spacingStyle[key]
+      }
+    }
+    if (Object.keys(spacingStyle).length > 0) {
+    style.push(spacingStyle);
+  }
   }
 
-  render() {
-    var {
+  computeStyle(): StyleProp<ViewStyle> {
+    const {
+      size,
+      noflex,
       row,
-      col,
-      flex,
       absolute,
       absoluteFill,
-      safeView,
-      avoidKeyboard,
-      isScrollable,
-      scrollViewProps
+      fitParent,
     } = this.props;
-    var style = this.mergeStyles();
-    if (absolute || absoluteFill) style.position = "absolute";
-    else if (flex) style.flex = 1;
-    this.setSize(style);
-    if (absoluteFill) {
-      style.left = 0;
-      style.top = 0;
-      style.right = 0;
-      style.bottom = 0;
-    }
-    if (col) style.flexDirection = "column";
+    this.style.length = 0; // empty style array while keeping the reference
+
+    if (size) this.style.push({ flex: size });
+    if (noflex) this.style.push(styles.noflex);
     if (row) {
-      style.flexDirection = "row";
-      this.rowSetAlignment(style);
-    } else this.colSetAlignment(style);
-    var ContainerComponent: any = View;
-    if (safeView) ContainerComponent = SafeAreaView;
-    else if (avoidKeyboard) ContainerComponent = KeyboardAvoidingView;
+      this.style.push(styles.row);
+      this.computeAlignment('row', this.style);
+    } else {
+      this.style.push(styles.col);
+      this.computeAlignment('col', this.style);
+    }
+    if (absolute) this.style.push(styles.absolute);
+    if (absoluteFill) this.style.push(styles.absoluteFill);
+    if (fitParent) this.computeFitParent(fitParent, this.style);
+    this.computeSpacing(this.style);
+    return this.mergeStyles(this.style);
+  }
+
+  public render() {
+    const { row, col, children, ...containerComponentProps } = this.props;
+    if (row && col) throw Error("'row' and 'col' cannot be both true");
+    const style = this.computeStyle();
+    const ContainerComponent = this.ContainerComponent;
     return (
-      <ContainerComponent
-        pointerEvents={this.props.pointerEvents}
-        onLayout={this.props.onLayout}
-        style={style}
-      >
-        {(isScrollable && (
-          <ScrollView style={styles.scrollView} {...scrollViewProps}>
-            {this.props.children}
-          </ScrollView>
-        )) ||
-          this.props.children}
+      <ContainerComponent {...containerComponentProps} style={style}>
+        {children}
       </ContainerComponent>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {},
-  scrollView: { flex: 1 }
+  noflex: {
+    flex: 0,
+  },
+  absolute: { position: 'absolute' },
+  absoluteFill: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 },
+  row: {
+    flexDirection: 'row',
+  },
+  fullWidth: { width: '100%' },
+  fullHeight: { height: '100%' },
+  col: {
+    flexDirection: 'column',
+  },
+  justifyContentCenter: {
+    justifyContent: 'center',
+  },
+  justifyContentStart: {
+    justifyContent: 'flex-start',
+  },
+  justifyContentEnd: {
+    justifyContent: 'flex-end',
+  },
+  alignItemsCenter: {
+    alignItems: 'center',
+  },
+  alignItemsStart: {
+    alignItems: 'flex-start',
+  },
+  alignItemsEnd: {
+    alignItems: 'flex-end',
+  },
 });
