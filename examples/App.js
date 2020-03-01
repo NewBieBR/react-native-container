@@ -22,6 +22,7 @@ const Section = props => {
 };
 
 const App: () => React$Node = () => {
+  const Containers = new Array(1000);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -102,6 +103,10 @@ const App: () => React$Node = () => {
             </Container>
           )}
         />
+        {Containers.map((c, index) => {
+          console.log(index);
+          return <Container key={index} style={styles.square} />;
+        })}
       </ScrollView>
     </SafeAreaView>
   );

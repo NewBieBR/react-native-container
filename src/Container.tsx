@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 import { AlignMode, CenterMode, FitMode, RowColAlignment } from '.';
 
 export interface ContainerProps extends ViewProps {
@@ -33,21 +39,26 @@ export default class Container extends React.PureComponent<ContainerProps> {
   ContainerComponent = View;
 
   static defaultProps = {
-    size: 1
+    size: 1,
+  };
+
+  style: ViewStyle[] = [];
+
+  constructor(props: ContainerProps) {
+    super(props);
+
+    this.style = [];
   }
 
   mergeStyles(computedStyle: ViewStyle[]): StyleProp<ViewStyle> {
-    let finalStyle: StyleProp<ViewStyle>;
+    let finalStyle: StyleProp<ViewStyle> = computedStyle;
     if (this.props.style instanceof Array)
       finalStyle = this.props.style.concat(computedStyle);
-    else {
-      finalStyle = computedStyle;
+    else if (this.props.style !== undefined) {
       finalStyle.unshift(this.props.style);
     }
     return finalStyle;
   }
-
-  style: ViewStyle[] = [];
 
   computeAlignment(mode: 'row' | 'col', style: ViewStyle[]) {
     const { center, align } = this.props;
@@ -70,14 +81,16 @@ export default class Container extends React.PureComponent<ContainerProps> {
     if (fitParent !== false) {
       style.push(styles.noflex);
     }
-    if (fitParent === 'width' || fitParent === true)
+    if (fitParent === 'width' || fitParent === true) {
       style.push(styles.fullWidth);
-    if (fitParent === 'height' || fitParent === true)
+    }
+    if (fitParent === 'height' || fitParent === true) {
       style.push(styles.fullHeight);
+    }
   }
 
   computeSpacing(style: ViewStyle[]) {
-    const spacingStyle = {
+    const spacingStyle = {
       padding: this.props.padding,
       paddingHorizontal: this.props.paddingHorizontal,
       paddingVertical: this.props.paddingVertical,
@@ -92,29 +105,23 @@ export default class Container extends React.PureComponent<ContainerProps> {
       marginRight: this.props.marginRight,
       marginTop: this.props.marginTop,
       marginBottom: this.props.marginBottom,
-    }
+    };
     for (const key of Object.keys(spacingStyle)) {
       if (spacingStyle[key] === undefined) {
-        delete spacingStyle[key]
+        delete spacingStyle[key];
       }
     }
     if (Object.keys(spacingStyle).length > 0) {
-    style.push(spacingStyle);
-  }
+      style.push(spacingStyle);
+    }
   }
 
   computeStyle(): StyleProp<ViewStyle> {
-    const {
-      size,
-      noflex,
-      row,
-      absolute,
-      absoluteFill,
-      fitParent,
-    } = this.props;
-    this.style.length = 0; // empty style array while keeping the reference
+    const { size, noflex, row, absolute, absoluteFill, fitParent } = this.props;
+    if (__DEV__) this.style = [];
+    else this.style.length = 0; // empty style array while keeping the reference
 
-    if (size) this.style.push({ flex: size });
+    this.style.push({ flex: size });
     if (noflex) this.style.push(styles.noflex);
     if (row) {
       this.style.push(styles.row);
@@ -133,10 +140,10 @@ export default class Container extends React.PureComponent<ContainerProps> {
   public render() {
     const { row, col, children, ...containerComponentProps } = this.props;
     if (row && col) throw Error("'row' and 'col' cannot be both true");
-    const style = this.computeStyle();
+    this.computeStyle();
     const ContainerComponent = this.ContainerComponent;
     return (
-      <ContainerComponent {...containerComponentProps} style={style}>
+      <ContainerComponent {...containerComponentProps} style={this.style}>
         {children}
       </ContainerComponent>
     );

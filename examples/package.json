@@ -12,7 +12,7 @@
   "dependencies": {
     "react": "16.9.0",
     "react-native": "0.61.4",
-    "react-native-container": "../react-native-container-1.0.5.tgz"
+    "react-native-container": "../react-native-container-1.0.6.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
